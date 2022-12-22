@@ -2,8 +2,8 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:5501";
 
-export const getQr = async () => {
-  const response = await axios.get(`${baseUrl}/auth`);
+export const getQr = async (parentPhone) => {
+  const response = await axios.get(`${baseUrl}/auth?phone=${parentPhone}`);
   console.log(response.data);
   return response.data;
 };

@@ -2,4 +2,6 @@
   font-size: 16px;
   --purple: #7000ff;
   --pink: #f4c7ff;
+  font-family: monospace;
+  color: var(--purple);
 }
