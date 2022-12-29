@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { getQr, secureConnection } from "../services/whatsapp";
+import { getQr, secureConnection, getGroupsData } from "../services/whatsapp";
 import { useForm } from "react-hook-form";
+import { Multiselect } from "multiselect-react-dropdown";
 import Page from "./page";
 
 const Onboarding = () => {
@@ -13,7 +14,7 @@ const Onboarding = () => {
     setStage(() => stage + 1);
     setStageData(data);
   };
-  const prevStage = () => {
+  const prevStage = (data) => {
     setStage(() => stage - 1);
     setStageData(data);
   };
@@ -36,6 +37,8 @@ const OnboardingFlow = ({ stage, ...props }) => {
       return <ParentForm {...props} />;
     case 1:
       return <ConnectToWhatsapp {...props} />;
+    case 2:
+      return <Rules {...props} />;
   }
 };
 
@@ -67,16 +70,16 @@ const ParentForm = ({ nextStage }) => {
   );
 };
 
-const ConnectToWhatsapp = ({ stageData }) => {
+const ConnectToWhatsapp = ({ stageData, nextStage }) => {
   const { data: qrData, isLoading } = useQuery(
     "qrdata",
     async () => await getQr(stageData.parentPhone)
   );
-  const [success, setSuccess] = useState(false);
+  const [connectionSuccess, setSuccess] = useState(false);
 
   const verifyConneciton = async () => {
     try {
-      const data = await secureConnection();
+      const data = await secureConnection(stageData.parentPhone);
       return data;
     } catch (err) {
       console.error(err);
@@ -87,6 +90,7 @@ const ConnectToWhatsapp = ({ stageData }) => {
     if (qrData?.qr) {
       const intervalId = setInterval(() => {
         verifyConneciton().then((data) => {
+          console.log(data);
           if (data?.connected) {
             clearInterval(intervalId);
             setSuccess(true);
@@ -96,9 +100,15 @@ const ConnectToWhatsapp = ({ stageData }) => {
     }
   }, [qrData, isLoading]);
 
+  useEffect(() => {
+    if (connectionSuccess) {
+      nextStage(stageData);
+    }
+  }, [connectionSuccess]);
+
   return (
-    <QrContainer>
-      {success ? (
+    <ContentContainer>
+      {connectionSuccess ? (
         "Success!"
       ) : (
         <>
@@ -115,11 +125,28 @@ const ConnectToWhatsapp = ({ stageData }) => {
           )}
         </>
       )}
-    </QrContainer>
+    </ContentContainer>
   );
 };
 
-const QrContainer = styled.div`
+const Rules = ({ stageData, nextStage }) => {
+  const { data: groups, isLoading } = useQuery(
+    "groups",
+    async () => await getGroupsData(stageData.parentPhone)
+  );
+
+  return (
+    <ContentContainer>
+      {isLoading ? (
+        "Loading groups, this can take a while..."
+      ) : (
+        <Multiselect options={groups.data} displayValue="name" />
+      )}
+    </ContentContainer>
+  );
+};
+
+const ContentContainer = styled.div`
   white-space: pre-wrap;
   line-height: 1;
   display: flex;
