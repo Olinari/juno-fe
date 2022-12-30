@@ -130,15 +130,15 @@ const ConnectToWhatsapp = ({ stageData, nextStage }) => {
 };
 
 const Rules = ({ stageData, nextStage }) => {
-  /*   const { data: groups, isLoading } = useQuery(
+  /*  const { data: groups, isLoading } = useQuery(
     "groups",
     async () => await getGroupsData(stageData.parentPhone)
-  ); */
-
+  );
+ */
   return (
     <ContentContainer>
       {true ? (
-        "Loading groups, this can take a while..."
+        "Juno is keeping you safe!"
       ) : (
         <Multiselect options={groups.data} displayValue="name" />
       )}
