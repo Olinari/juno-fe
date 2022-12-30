@@ -9,7 +9,7 @@ const Router = () => {
       element: <Onboarding />,
     },
     {
-      path: "connect-admin",
+      path: "/connect-admin",
       element: <ConnectAdmin />,
     },
   ]);
