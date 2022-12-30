@@ -1,82 +1,25 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
-import { getQr, secureConnection, getGroupsData } from "../services/whatsapp";
-import { useForm } from "react-hook-form";
+import { getAdminQr, secureConnection } from "../services/whatsapp";
 import { Multiselect } from "multiselect-react-dropdown";
 import Page from "./page";
 
-const Onboarding = () => {
-  const [stage, setStage] = useState(0);
-  const [stageData, setStageData] = useState(null);
-
-  const nextStage = (data) => {
-    setStage(() => stage + 1);
-    setStageData(data);
-  };
-  const prevStage = (data) => {
-    setStage(() => stage - 1);
-    setStageData(data);
-  };
-
+const ConnectAdmin = () => {
   return (
     <Page>
-      <OnboardingFlow
-        stage={stage}
-        stageData={stageData}
-        prevStage={prevStage}
-        nextStage={nextStage}
-      />
+      <ConnectToWhatsapp />
     </Page>
-  );
-};
-
-const OnboardingFlow = ({ stage, ...props }) => {
-  switch (stage) {
-    case 0:
-      return <ParentForm {...props} />;
-    case 1:
-      return <ConnectToWhatsapp {...props} />;
-    case 2:
-      return <Rules {...props} />;
-  }
-};
-
-const ParentForm = ({ nextStage }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => nextStage(data);
-
-  return (
-    <>
-      <Description>
-        Please provide **your** whatsapp phone number so we can inform you in
-        the case of text blah.
-      </Description>
-      <ParentDetailsForm onSubmit={handleSubmit(onSubmit)}>
-        <input
-          placeholder="Your Phone # here"
-          {...register("parentPhone", { required: true })}
-        />
-        {errors.exampleRequired && <span>This field is required</span>}
-
-        <button type="submit">Submit</button>
-      </ParentDetailsForm>
-    </>
   );
 };
 
 const ConnectToWhatsapp = ({ stageData, nextStage }) => {
   const { data: qrData, isLoading } = useQuery(
     "qrdata",
-    async () => await getQr(stageData.parentPhone)
+    async () => await getAdminQr()
   );
   const [connectionSuccess, setSuccess] = useState(false);
-
+  console.log(qrData);
   const verifyConneciton = async () => {
     try {
       const data = await secureConnection(stageData.parentPhone);
@@ -100,12 +43,6 @@ const ConnectToWhatsapp = ({ stageData, nextStage }) => {
     }
   }, [qrData, isLoading]);
 
-  useEffect(() => {
-    if (connectionSuccess) {
-      nextStage(stageData);
-    }
-  }, [connectionSuccess]);
-
   return (
     <ContentContainer>
       {connectionSuccess ? (
@@ -116,10 +53,7 @@ const ConnectToWhatsapp = ({ stageData, nextStage }) => {
             "loading..."
           ) : (
             <>
-              <Description>
-                Scan This Qr code using whatsapp (Link a device) on the device
-                you would like to protect 👁
-              </Description>
+              <Description>👁</Description>
               <Qr>{qrData.qr}</Qr>
             </>
           )}
@@ -190,4 +124,4 @@ const ParentDetailsForm = styled.form`
   }
 `;
 
-export default Onboarding;
+export default ConnectAdmin;

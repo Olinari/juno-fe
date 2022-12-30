@@ -5,14 +5,12 @@ import Router from "./router";
 import { useState } from "react";
 
 function App() {
-  const [activeUser, setActiveUser] = useState(null);
-
   return (
     <>
       <Topbar>
         <Logo />
       </Topbar>
-      {!Boolean(activeUser) ? <Onboarding /> : <Router />}
+      <Router />
     </>
   );
 }
