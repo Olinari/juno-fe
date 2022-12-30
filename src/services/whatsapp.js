@@ -1,7 +1,7 @@
 import axios from "axios";
 
-/* const baseUrl = "https://juno.herokuapp.com"; */
-const baseUrl = "http://localhost:5501";
+const baseUrl = "https://juno.herokuapp.com";
+/* const baseUrl = "http://localhost:5501"; */
 
 export const getQr = async (parentPhone) => {
   const response = await axios.get(
