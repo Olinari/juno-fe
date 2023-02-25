@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:5501";
+const baseUrl = "https://api.munity.info";
 export const getQr = async (parentPhone) => {
   const response = await axios.get(
     `${baseUrl}/juno/connect-client?phone=${parentPhone}`
