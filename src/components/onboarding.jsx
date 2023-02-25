@@ -120,7 +120,7 @@ const ConnectToWhatsapp = ({ stageData, nextStage }) => {
                 Scan This Qr code using whatsapp (Link a device) on the device
                 you would like to protect 👁
               </Description>
-              <Qr>{qrData.qr}</Qr>
+              <Qr>{qrData?.qr}</Qr>
             </>
           )}
         </>

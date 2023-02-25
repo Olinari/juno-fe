@@ -1,24 +1,17 @@
 import axios from "axios";
 
-const baseUrl = "https://juno.herokuapp.com";
-/* const baseUrl = "http://localhost:5501"; */
-
+const baseUrl = "http://localhost:5501";
 export const getQr = async (parentPhone) => {
   const response = await axios.get(
-    `${baseUrl}/connect-client?phone=${parentPhone}`
+    `${baseUrl}/juno/connect-client?phone=${parentPhone}`
   );
   console.log(response.data);
   return response.data;
 };
 
-export const getAdminQr = async () => {
-  const response = await axios.get(`${baseUrl}/admin`);
-  console.log(response.data);
-  return response.data;
-};
 export const secureConnection = async (parentPhone) => {
   const response = await axios.get(
-    `${baseUrl}/secure-connection?phone=${parentPhone}`
+    `${baseUrl}/juno/secure-client?phone=${parentPhone}`
   );
   return await response.data;
 };

@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
-import ConnectAdmin from "./components/connect-admin";
+
 import Onboarding from "./components/onboarding";
 
 const Router = () => {
@@ -7,10 +7,6 @@ const Router = () => {
     {
       path: "/",
       element: <Onboarding />,
-    },
-    {
-      path: "/connect-admin",
-      element: <ConnectAdmin />,
     },
   ]);
 
