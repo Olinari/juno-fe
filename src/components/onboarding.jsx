@@ -54,10 +54,15 @@ const ParentForm = ({ nextStage }) => {
   return (
     <>
       <Description>
-        Please provide **your** whatsapp phone number so we can inform you in
-        the case of text blah.
+        Please provide some details, so we can inform you in the case of
+        toxic/violent messages.
       </Description>
       <ParentDetailsForm onSubmit={handleSubmit(onSubmit)}>
+        <input
+          placeholder="Child's Name"
+          {...register("childName", { required: false })}
+        />
+
         <input
           placeholder="Your Phone # here"
           {...register("parentPhone", { required: true })}
@@ -71,9 +76,10 @@ const ParentForm = ({ nextStage }) => {
 };
 
 const ConnectToWhatsapp = ({ stageData, nextStage }) => {
+  console.log(stageData);
   const { data: qrData, isLoading } = useQuery(
     "qrdata",
-    async () => await getQr(stageData.parentPhone)
+    async () => await getQr(stageData.parentPhone, stageData.childName ?? "")
   );
   const [connectionSuccess, setSuccess] = useState(false);
 
@@ -129,12 +135,7 @@ const ConnectToWhatsapp = ({ stageData, nextStage }) => {
   );
 };
 
-const Rules = ({ stageData, nextStage }) => {
-  /*  const { data: groups, isLoading } = useQuery(
-    "groups",
-    async () => await getGroupsData(stageData.parentPhone)
-  );
- */
+const Rules = () => {
   return (
     <ContentContainer>
       {true ? (
@@ -165,6 +166,7 @@ const Description = styled.p`
 `;
 
 const ParentDetailsForm = styled.form`
+  font-family: sans-serif !important;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -175,6 +177,8 @@ const ParentDetailsForm = styled.form`
     padding: 4px;
     margin: 4px;
     background-color: transparent;
+    text-decoration: underline 2px solid #0000004c;
+    text-underline-offset: 2px;
 
     &:focus {
       text-decoration: underline 2px solid var(--purple);
