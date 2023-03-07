@@ -146,7 +146,7 @@ const Rules = () => {
     <ContentContainer>
       {true ? (
         <>
-          <>Juno is keeping you safe!</>
+          <>Keepi is keeping you safe!</>
           <div style={{ marginTop: "32px" }}>
             <svg
               width="91"
