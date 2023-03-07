@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
-const Page = ({ children }) => {
-  return <PageContaner>{children}</PageContaner>;
+const Page = ({ children, ...props }) => {
+  return <PageContaner {...props}>{children}</PageContaner>;
 };
 
 const PageContaner = styled.section`
-  background-color: var(--pink);
-  height: 100vh;
+  height: calc(100vh - 60px);
 `;
 
 export default Page;

@@ -5,6 +5,7 @@ import { getQr, secureConnection, getGroupsData } from "../services/whatsapp";
 import { useForm } from "react-hook-form";
 import { Multiselect } from "multiselect-react-dropdown";
 import Page from "./page";
+import { TextField } from "@mui/material";
 
 const Onboarding = () => {
   const [stage, setStage] = useState(0);
@@ -20,14 +21,14 @@ const Onboarding = () => {
   };
 
   return (
-    <Page>
+    <OnboardingPage>
       <OnboardingFlow
         stage={stage}
         stageData={stageData}
         prevStage={prevStage}
         nextStage={nextStage}
       />
-    </Page>
+    </OnboardingPage>
   );
 };
 
@@ -58,13 +59,18 @@ const ParentForm = ({ nextStage }) => {
         toxic/violent messages.
       </Description>
       <ParentDetailsForm onSubmit={handleSubmit(onSubmit)}>
-        <input
-          placeholder="Child's Name"
+        <TextField
+          required
+          variant="standard"
+          label="Child's Name"
           {...register("childName", { required: false })}
         />
 
-        <input
-          placeholder="Your Phone # here"
+        <TextField
+          style={{ marginTop: "32px" }}
+          required
+          variant="standard"
+          label="Your Phone # here"
           {...register("parentPhone", { required: true })}
         />
         {errors.exampleRequired && <span>This field is required</span>}
@@ -159,6 +165,7 @@ const Qr = styled.div`
   margin-top: 24px;
   font-size: 10px;
   transform: scaleY(1.2);
+  font-family: monospace;
 `;
 
 const Description = styled.p`
@@ -173,25 +180,19 @@ const ParentDetailsForm = styled.form`
   justify-content: center;
   align-items: center;
 
-  input {
-    padding: 4px;
-    margin: 4px;
-    background-color: transparent;
-    text-decoration: underline 2px solid #0000004c;
-    text-underline-offset: 2px;
-
-    &:focus {
-      text-decoration: underline 2px solid var(--purple);
-      text-underline-offset: 2px;
-      transition: text-decoration 0.2s;
-    }
-  }
-
   button {
-    padding: 4px 8px;
+    margin-top: 32px;
+    padding: 8px 16px;
     color: white;
-    background-color: var(--purple);
+    border-radius: 100vmax;
+    background-color: var(--dark);
   }
+`;
+
+const OnboardingPage = styled(Page)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export default Onboarding;

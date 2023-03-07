@@ -1,11 +1,13 @@
 import * as icons from "./index";
 
-const Icon = ({ name }) => {
+const Icon = ({ name = "", ...props }) => {
   if (!icons[name]) {
-    console.info(`SvgIcon "${name}" not found`);
+    console.warn(`SvgIcon "${name}" not found`);
   }
 
-  return icons[name]() ?? null;
+  const IconComponent = icons[name];
+
+  return <IconComponent {...props} />;
 };
 
 export default Icon;

@@ -1,6 +1,6 @@
 import Icon from "./icons/Icon";
 import styled from "styled-components";
 
-const Logo = () => <Icon name={"Logo"} />;
+const Logo = (props) => <Icon name={"Logo"} {...props} />;
 
 export default Logo;
